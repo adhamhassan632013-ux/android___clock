@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adham Clock</title>
+    <!-- الإضافة عشان يشتغل كتطبيق صاغ سليم -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="manifest" href='data:application/manifest+json,{"name":"Adham Clock","short_name":"Clock","start_url":"./","display":"fullscreen","background_color":"#000000","theme_color":"#000000"}'>
+    
+    <!-- استدعاء الخطوط: Varela Round للأرقام و Alex Brush للأسماء -->
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Varela+Round&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body, html {
+            width: 100%; height: 100%;
+            background-color: #000000;
+            font-family: 'Varela Round', sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #clock-container {
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: row; 
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 14vw; 
+        }
+
+        .time-display {
+            font-size: 16vw; 
+            font-weight: 700; 
+            letter-spacing: -0.4vw;
+            display: flex;
+            align-items: center;
+        }
+
+        .digit-container {
+            width: 1.1ch; text-align: center;
+            background: linear-gradient(to bottom, #0011aa 20%, #0055ff 50%, #d6f0ff 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: wave-animation 4s ease-in-out infinite;
+        }
+
+        #h1 { animation-delay: 0s; }
+        #h2 { animation-delay: 0.2s; }
+        #m1 { animation-delay: 0.4s; }
+        #m2 { animation-delay: 0.6s; }
+
+        @keyframes wave-animation {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-1.2vw); } 
+        }
+
+        .separator {
+            width: 0.4ch; margin: 0 0.5vw;
+            background: linear-gradient(to bottom, #0011aa 20%, #0055ff 50%, #d6f0ff 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: separator-blink 1s linear infinite;
+        }
+
+        @keyframes separator-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .right-column {
+            display: flex; flex-direction: column;
+            justify-content: space-between; 
+            align-items: flex-end; 
+            height: 55vh; min-width: 25vw;
+        }
+
+        /* رجعنا الخط المائل تاني هنا */
+        .day-text { font-family: 'Alex Brush', cursive; font-size: 6vw; font-weight: bold; color: #0055ff; text-transform: lowercase; }
+        .date-text { font-family: 'Alex Brush', cursive; font-size: 7vw; font-weight: bold; color: #0044dd; }
+        .by-text { font-family: 'Alex Brush', cursive; font-size: 4.5vw; font-weight: bold; color: #0077ff; line-height: 0.8; }
+        .signature-box { font-family: 'Alex Brush', cursive; font-size: 4vw; color: #d6f0ff; margin-top: 0.5vw; }
+    </style>
+</head>
+<body>
+    <div id="clock-container">
+        <div class="time-display">
+            <div class="digit-container" id="h1"></div>
+            <div class="digit-container" id="h2"></div>
+            <div class="separator">:</div>
+            <div class="digit-container" id="m1"></div>
+            <div class="digit-container" id="m2"></div>
+        </div>
+        <div class="right-column">
+            <div style="display:flex; flex-direction:column; align-items:flex-end;">
+                <span class="day-text" id="day-name"></span>
+                <span class="date-text" id="day-number"></span>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:flex-end;">
+                <span class="by-text">created by</span>
+                <span class="signature-box">Adham</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        function updateClock() {
+            const now = new Date();
+            let h = (now.getHours() % 12 || 12).toString().padStart(2, '0');
+            let m = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('h1').innerHTML = h[0];
+            document.getElementById('h2').innerHTML = h[1];
+            document.getElementById('m1').innerHTML = m[0];
+            document.getElementById('m2').innerHTML = m[1];
+            const days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+            document.getElementById('day-name').innerHTML = days[now.getDay()];
+            document.getElementById('day-number').innerHTML = now.getDate();
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+</html>
